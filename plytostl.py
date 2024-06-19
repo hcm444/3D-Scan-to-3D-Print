@@ -6,6 +6,12 @@ import pymeshfix
 
 def convert_ply_to_stl(ply_files, output_dir, min_triangles=10000):
     for ply_file in ply_files:
+        
+        #Skip non ply files
+        if not ply_file.lower().endswith('.ply'):
+            print(f'Skipping "{ply_file}" because it is filetype: "{os.path.splitext(ply_file)[1]}"')
+            continue
+        
         # Load the mesh using Open3D
         mesh = o3d.io.read_triangle_mesh(ply_file)
         mesh.compute_vertex_normals()  # Compute normals before processing
@@ -45,8 +51,8 @@ if __name__ == "__main__":
     ply_folder = "ply files"
     output_dir = "stl files"
 
-    # Get all .ply files in the specified folder
-    ply_files = glob.glob(os.path.join(ply_folder, "*.ply"))
+    # Get all files in the specified folder
+    ply_files = glob.glob(os.path.join(ply_folder, "*"))
 
     # Ensure the output directory exists
     os.makedirs(output_dir, exist_ok=True)
